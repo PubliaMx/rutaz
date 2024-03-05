@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from "../views/Login";
 import ChatScreen from "../views/ChatScreen";
 import Cabecera from "../Components/Topbar/Cabecera";
 import Sidebar from "../views/Sidebar";
 import SidebarUsers from "../views/SidebarUsers";
+import Modal from "./Modal"; // Importa el componente Modal
 import '../styles/chat.css';
 
 function ChatPage() {
     const { isAuthenticated, isLoading, user } = useAuth0();
-    const [canalActivo, setCanalActivo] = useState("Ingreso"); // Cambiado a canalActivo y configurado por defecto como "Ingreso"
+    const [canalActivo, setCanalActivo] = useState("Ingreso");
+    const [showModal, setShowModal] = useState(false); // Nuevo estado para controlar la visibilidad del modal
 
     if (isLoading) {
-        // Muestra algún indicador de carga mientras se verifica la autenticación del usuario
         return <div>Loading...</div>;
     }
+
+    // Función para abrir el modal
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    // Función para cerrar el modal
+    const closeModal = () => {
+        setShowModal(false);
+    };
 
     return (
         <div className="app">
@@ -24,15 +35,23 @@ function ChatPage() {
                     <ChatScreen canalActivo={canalActivo} usuario={user} />
                     <div className="sidebarsContainer">
                         <Sidebar 
-                            setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
+                            setCanalActivo={setCanalActivo}
                             usuario={user}
+                            openModal={openModal} // Pasa la función para abrir el modal como prop
                         />
                         <SidebarUsers 
-                            setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
+                            setCanalActivo={setCanalActivo}
                             usuario={user}
-                            canalActivo={canalActivo} // Cambiado a canalActivo
+                            canalActivo={canalActivo}
                         />
                     </div>
+                    {/* Modal para seleccionar el color */}
+                    {showModal && (
+                        <Modal onClose={closeModal}>
+                            <h2>Selecciona un color:</h2>
+                            {/* Contenido del modal */}
+                        </Modal>
+                    )}
                 </>
             ) : (
                 <Login />
