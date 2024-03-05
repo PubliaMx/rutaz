@@ -39,6 +39,18 @@ function Sidebar({ usuario, setCanalActivo }) {
       return; // Si el usuario presiona Cancelar, salir de la función
     }
 
+    let montoApuesta;
+    while (true) {
+      montoApuesta = prompt("Ingresa el monto a apostar");
+      if (montoApuesta === null) {
+        return; // Si el usuario presiona Cancelar, salir de la función
+      } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
+        alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
+      } else {
+        break;
+      }
+    }
+
     let colorSeleccionado;
     while (true) {
       const colorInput = prompt("Selecciona un color para el canal:\n1. Amarillo\n2. Azul\n3. Verde\n4. Naranja");
