@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from "../views/Login";
 import ChatScreen from "../views/ChatScreen";
@@ -11,21 +11,22 @@ import '../styles/chat.css';
 function ChatPage() {
     const { isAuthenticated, isLoading, user } = useAuth0();
     const [canalActivo, setCanalActivo] = useState("Ingreso");
-    const [showModal, setShowModal] = useState(false); // Nuevo estado para controlar la visibilidad del modal
+    const [showModal, setShowModal] = useState(true); // Cambiamos el estado inicial para mostrar el modal
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    // Función para abrir el modal
-    const openModal = () => {
-        setShowModal(true);
-    };
+    useEffect(() => {
+        console.log("useEffect ejecutado");
+    }, []); // Dejamos el arreglo de dependencias vacío para que se ejecute solo una vez
 
     // Función para cerrar el modal
     const closeModal = () => {
         setShowModal(false);
     };
+
+    console.log("Estado de showModal:", showModal);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="app">
@@ -37,7 +38,6 @@ function ChatPage() {
                         <Sidebar 
                             setCanalActivo={setCanalActivo}
                             usuario={user}
-                            openModal={openModal} // Pasa la función para abrir el modal como prop
                         />
                         <SidebarUsers 
                             setCanalActivo={setCanalActivo}
@@ -46,12 +46,10 @@ function ChatPage() {
                         />
                     </div>
                     {/* Modal para seleccionar el color */}
-                    {showModal && (
-                        <Modal onClose={closeModal}>
-                            <h2>Selecciona un color:</h2>
-                            {/* Contenido del modal */}
-                        </Modal>
-                    )}
+                    <Modal onClose={closeModal} show={showModal}>
+                        <h2>Selecciona un color:</h2>
+                        {/* Contenido del modal */}
+                    </Modal>
                 </>
             ) : (
                 <Login />
