@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Divider } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import { ExpandMore, Add } from "@material-ui/icons";
-import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
-import io from "socket.io-client"; // Importa el cliente de Socket.IO
-import TuSaldo from "../Components/Saldo/TuSaldo";
+import io from "socket.io-client";
+import Modal from "./Modal";
 import '../styles/fichas.css';
-import Modal from "./Modal"; // Importa el componente Modal
+import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
+import TuSaldo from "../Components/Saldo/TuSaldo"; // Asegúrate de que esta importación sea correcta y que el componente esté exportado correctamente
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT; 
 
-const socket = io('http://localhost:3300'); // Establece la conexión con el servidor de Socket.IO
+const socket = io('http://localhost:3300');
 
 function Sidebar({ usuario, setCanalActivo }) {
   const [canales, setCanales] = useState([]);
-  const [canalActivoNombre, setCanalActivoNombre] = useState(""); 
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
@@ -23,7 +22,6 @@ function Sidebar({ usuario, setCanalActivo }) {
     obtenerCanales();
   }, []);
 
-  // Función para obtener la lista de canales desde la API
   const obtenerCanales = async () => {
     try {
       const response = await axios.post(
@@ -40,20 +38,20 @@ function Sidebar({ usuario, setCanalActivo }) {
     const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
     if (!nombreCanal) {
       console.log('El usuario canceló la operación.');
-      return; // Si el usuario presiona Cancelar, salir de la función
+      return;
     }
-    console.log('Nombre del canal ingresado:', nombreCanal);
+
     let montoApuesta;
     while (true) {
       montoApuesta = prompt("Ingresa el monto a apostar");
       if (!montoApuesta) {
         console.log('El usuario canceló la operación.');
-        return; // Si el usuario presiona Cancelar, salir de la función
+        return;
       } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
         alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
       } else {
         console.log('Monto de apuesta válido:', montoApuesta);
-        setShowModal(true); // Si todo está bien, mostrar el modal para seleccionar el color
+        setShowModal(true);
         break;
       }
     }
@@ -65,7 +63,6 @@ function Sidebar({ usuario, setCanalActivo }) {
     agregarCanal(color);
   };
 
-  // Función para agregar un canal
   const agregarCanal = async (colorSeleccionado) => {
     // Aquí va la lógica para agregar el canal
   };
@@ -86,18 +83,17 @@ function Sidebar({ usuario, setCanalActivo }) {
             </a>
         </div>
         <div className="sidebar__channelsList">
-          {/* Mostrar la lista de canales si canales es un array */}
           {Array.isArray(canales) && canales.length > 0 ? (
-          <>
-          {canales.map((canal, index) => (
-          <div onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}> {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
-          <CanalEnSidebar nombre_cann={canal} id={index} />
-        </div>
-          ))}
-          </>
-      ) : (
-        <p>No hay canales disponibles</p>
-      )}
+            <>
+              {canales.map((canal, index) => (
+                <div key={index} onClick={() => setCanalActivo(canal)}>
+                  <CanalEnSidebar nombre_cann={canal} id={index} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <p>No hay canales disponibles</p>
+          )}
         </div>
 
         <div className="sidebar__profile">
@@ -111,7 +107,6 @@ function Sidebar({ usuario, setCanalActivo }) {
         </div>
       </div>
 
-      {/* Modal para seleccionar el color */}
       <Modal show={showModal} onClose={() => setShowModal(false)}>
         <h2>Selecciona un color:</h2>
         <div className="color-options">
