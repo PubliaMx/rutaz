@@ -33,6 +33,8 @@ function Sidebar({ usuario, setCanalActivo }) {
 
   // Función para agregar un canal
   const agregarCanal = async () => {
+    console.log('**************');
+    console.log(usuario.picture);
     const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
     if (!nombreCanal) {
       return; // Si el usuario presiona Cancelar, salir de la función
@@ -57,6 +59,7 @@ function Sidebar({ usuario, setCanalActivo }) {
       apuesta: parseInt(montoApuesta),
       timestamp: 'mas',
       creador: usuario.name,
+      
       // Puedes incluir más datos relevantes del canal aquí si lo necesitas
     });
 
@@ -72,6 +75,7 @@ function Sidebar({ usuario, setCanalActivo }) {
           creador: usuario.name,
           creador_mail: usuario.email,
           timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
+          creador_picture: usuario.picture,
         }
       );
 
