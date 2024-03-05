@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function CargarSaldo() {
     const [cantidad, setCantidad] = useState('');
-    const [saldoRestante, setSaldoRestante] = useState('');
     const [error, setError] = useState('');
     const { isAuthenticated, user, loginWithRedirect } = useAuth0();
-
-    useEffect(() => {
-        if (cantidad !== '') {
-            const tarifaStripe = calcularTarifaStripe(parseFloat(cantidad));
-            const saldo = parseFloat(cantidad) - tarifaStripe;
-            setSaldoRestante(saldo.toFixed(2));
-        }
-    }, [cantidad]);
 
     const handlePagar = async () => {
         if (!isAuthenticated) {
@@ -52,12 +43,8 @@ function CargarSaldo() {
     };
 
     const handleChangeCantidad = (event) => {
-        setCantidad(event.target.value);
-    };
-
-    const calcularTarifaStripe = (monto) => {
-        const tarifa = monto * 0.036 + 3.00;
-        return tarifa;
+        const cantidadIngresada = parseFloat(event.target.value);
+        setCantidad(cantidadIngresada);
     };
 
     return (
@@ -83,7 +70,6 @@ function CargarSaldo() {
                     {error && <p>{error}</p>}
                     <div>
                         <h1>Usuario: {user && user.email}</h1>
-                        <p>Saldo restante después de la tarifa de Stripe: ${saldoRestante}</p>
                     </div>
                 </div>
             )}

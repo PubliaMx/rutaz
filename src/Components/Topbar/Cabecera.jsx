@@ -11,12 +11,14 @@ import ModoLink from '../Poleana/ModoLink';
 
 import TuSaldo from '../Saldo/TuSaldo';
 
+
 import dinero from '../../assets/images/dinero.gif';
 import texto from '../../assets/images/texto.jpg';
 import topbar from '../../assets/images/topbar.png';
 import acumulado from '../../assets/images/acumulado.png';
 import imagen_texto from '../../assets/poelana_el_juego_de_la_libertad.png';
 import menuimagen from '../../assets/menu.png';
+import TuSaldoFormateado from '../Saldo/TuSaldoFormateado';
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT;
@@ -96,7 +98,7 @@ function Cabecera() {
         
         <div className="acumuladoContainer">
           <span className="acumulado acumulado_texto">Tu Acumulado:</span>
-          <span className="acumulado acumulado_saldo"><span className="moneda">$  </span> <TuSaldo /> </span>
+          <span className="acumulado acumulado_saldo"><span className="moneda">$  </span> <TuSaldoFormateado /> </span>
         </div>
       
 
