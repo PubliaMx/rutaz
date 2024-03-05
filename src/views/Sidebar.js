@@ -5,6 +5,8 @@ import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
 import io from "socket.io-client"; // Importa el cliente de Socket.IO
 import TuSaldo from "../Components/Saldo/TuSaldo";
+import '../styles/fichas.css';
+import Modal from "./Modal"; // Importa el componente Modal
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT; 
@@ -14,6 +16,8 @@ const socket = io('http://localhost:3300'); // Establece la conexión con el ser
 function Sidebar({ usuario, setCanalActivo }) {
   const [canales, setCanales] = useState([]);
   const [canalActivoNombre, setCanalActivoNombre] = useState(""); 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
 
   useEffect(() => {
     obtenerCanales();
@@ -32,39 +36,60 @@ function Sidebar({ usuario, setCanalActivo }) {
     }
   };
 
+  const mostrarModalColores = () => {
+    return new Promise((resolve, reject) => {
+      // Aquí puedes implementar la lógica para mostrar el modal con las opciones de colores
+      // y luego resolver la promesa con el color seleccionado por el usuario
+      const coloresDisponibles = ["fichaamarilla", "fichaazul", "fichaverde", "fichanaranja"];
+      setShowModal(true);
+    });
+  };
+
+  const handleAgregarCanal = (color) => {
+    setShowModal(false);
+    setSelectedColor(color);
+    agregarCanal(color);
+  };
+
   // Función para agregar un canal
-  const agregarCanal = async () => {
-    console.log('**************');
-    console.log(usuario.picture);
+  const agregarCanal = async (colorSeleccionado) => {
+    console.log('Iniciando proceso de agregar canal...');
     const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
+    console.log('Nombre del canal ingresado:', nombreCanal);
     if (!nombreCanal) {
+      console.log('El usuario canceló la operación.');
       return; // Si el usuario presiona Cancelar, salir de la función
     }
 
     let montoApuesta;
     while (true) {
       montoApuesta = prompt("Ingresa el monto a apostar");
+      console.log('Monto de apuesta ingresado:', montoApuesta);
       if (!montoApuesta || isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
         if (montoApuesta === null) {
+          console.log('El usuario canceló la operación.');
           return; // Si el usuario presiona Cancelar, salir de la función
         }
         alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
       } else {
+        console.log('Monto de apuesta válido.');
         break;
       }
     }
 
-    // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
-    socket.emit('chat_new_channel', {
-      nombre_canal: nombreCanal,
-      apuesta: parseInt(montoApuesta),
-      timestamp: 'mas',
-      creador: usuario.name,
-      
-      // Puedes incluir más datos relevantes del canal aquí si lo necesitas
-    });
-
     try {
+      // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
+      socket.emit('chat_new_channel', {
+        nombre_canal: nombreCanal,
+        apuesta: parseInt(montoApuesta),
+        timestamp: 'mas',
+        creador: usuario.name,
+        color: colorSeleccionado, // Pasar el color seleccionado a la petición API
+        // Puedes incluir más datos relevantes del canal aquí si lo necesitas
+      });
+
+      console.log('Petición de creación de canal enviada al servidor.');
+
       const timeChanelCreated = new Date().toISOString(); // Guarda la fecha y hora actual en formato ISO 8601
 
       const response = await axios.post(
@@ -77,10 +102,14 @@ function Sidebar({ usuario, setCanalActivo }) {
           creador_mail: usuario.email,
           timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
           creador_picture: usuario.picture,
+          color: colorSeleccionado, // Pasar el color seleccionado a la petición API
         }
       );
 
+      console.log('Respuesta del servidor:', response.data);
+
       if (response.data.success) {
+        console.log('Canal agregado exitosamente.');
         obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
       } else {
         console.error("Error al agregar canal:", response.data.message);
@@ -100,7 +129,7 @@ function Sidebar({ usuario, setCanalActivo }) {
             <ExpandMore />
             <h4>Estancia de Ingreso</h4>
           </div>
-            <a className="creaCanalText" href="#" onClick={agregarCanal}>
+            <a className="creaCanalText" href="#" onClick={mostrarModalColores}>
               <Add className="sidebar__addChannel" />
               Crear Salón para Juego
             </a>
@@ -130,6 +159,37 @@ function Sidebar({ usuario, setCanalActivo }) {
           </div>
         </div>
       </div>
+
+      {/* Modal para seleccionar el color */}
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <h2>Selecciona un color:</h2>
+        <div className="color-options">
+          <div
+            className="color-option fichaamarilla"
+            onClick={() => handleAgregarCanal("fichaamarilla")}
+          >
+            Amarilla
+          </div>
+          <div
+            className="color-option fichaazul"
+            onClick={() => handleAgregarCanal("fichaazul")}
+          >
+            Azul
+          </div>
+          <div
+            className="color-option fichaverde"
+            onClick={() => handleAgregarCanal("fichaverde")}
+          >
+            Verde
+          </div>
+          <div
+            className="color-option fichanaranja"
+            onClick={() => handleAgregarCanal("fichanaranja")}
+          >
+            Naranja
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
