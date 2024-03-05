@@ -115,7 +115,7 @@ function ChatScreen({ canalActivo, usuario }) {
             className="chat__inputButton"
             type="submit"
           >
-            Enviar Mensaje
+            <h4> Unirme al juego !! </h4>
           </button>
         </form>
       </div>

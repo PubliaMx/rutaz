@@ -22,7 +22,7 @@ function ChatPage() {
             <Cabecera />
             {isAuthenticated ? (
                 <>
-                    <ChatScreen canalActivo={canalActivo} usuario={user} />
+                    <ChatScreen canalActivo={'canalActivo'} usuario={user} />
                     <div>
 
                         

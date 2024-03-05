@@ -5,4 +5,8 @@
     overflow: hidden; /* Esto recorta cualquier parte de la imagen que se extienda más allá del radio del círculo */
     display: inline-block;
   }
-  
+  .circular-image-channel-list {
+    border-radius: 50%; /* Esto establece el radio de las esquinas para hacerla circular */
+    overflow: hidden; /* Esto recorta cualquier parte de la imagen que se extienda más allá del radio del círculo */
+
+  }
