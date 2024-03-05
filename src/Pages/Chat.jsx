@@ -5,7 +5,7 @@ import ChatScreen from "../views/ChatScreen";
 import Cabecera from "../Components/Topbar/Cabecera";
 import Sidebar from "../views/Sidebar";
 import SidebarUsers from "../views/SidebarUsers";
-import Modal from "./Modal"; // Importa el componente Modal
+import Modal from "../views/Modal"; // Importa el componente Modal
 import '../styles/chat.css';
 
 function ChatPage() {

@@ -37,12 +37,26 @@ function Sidebar({ usuario, setCanalActivo }) {
   };
 
   const mostrarModalColores = () => {
-    return new Promise((resolve, reject) => {
-      // Aquí puedes implementar la lógica para mostrar el modal con las opciones de colores
-      // y luego resolver la promesa con el color seleccionado por el usuario
-      const coloresDisponibles = ["fichaamarilla", "fichaazul", "fichaverde", "fichanaranja"];
-      setShowModal(true);
-    });
+    const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
+    if (!nombreCanal) {
+      console.log('El usuario canceló la operación.');
+      return; // Si el usuario presiona Cancelar, salir de la función
+    }
+    console.log('Nombre del canal ingresado:', nombreCanal);
+    let montoApuesta;
+    while (true) {
+      montoApuesta = prompt("Ingresa el monto a apostar");
+      if (!montoApuesta) {
+        console.log('El usuario canceló la operación.');
+        return; // Si el usuario presiona Cancelar, salir de la función
+      } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
+        alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
+      } else {
+        console.log('Monto de apuesta válido:', montoApuesta);
+        setShowModal(true); // Si todo está bien, mostrar el modal para seleccionar el color
+        break;
+      }
+    }
   };
 
   const handleAgregarCanal = (color) => {
@@ -53,70 +67,7 @@ function Sidebar({ usuario, setCanalActivo }) {
 
   // Función para agregar un canal
   const agregarCanal = async (colorSeleccionado) => {
-    console.log('Iniciando proceso de agregar canal...');
-    const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
-    console.log('Nombre del canal ingresado:', nombreCanal);
-    if (!nombreCanal) {
-      console.log('El usuario canceló la operación.');
-      return; // Si el usuario presiona Cancelar, salir de la función
-    }
-
-    let montoApuesta;
-    while (true) {
-      montoApuesta = prompt("Ingresa el monto a apostar");
-      console.log('Monto de apuesta ingresado:', montoApuesta);
-      if (!montoApuesta || isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
-        if (montoApuesta === null) {
-          console.log('El usuario canceló la operación.');
-          return; // Si el usuario presiona Cancelar, salir de la función
-        }
-        alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
-      } else {
-        console.log('Monto de apuesta válido.');
-        break;
-      }
-    }
-
-    try {
-      // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
-      socket.emit('chat_new_channel', {
-        nombre_canal: nombreCanal,
-        apuesta: parseInt(montoApuesta),
-        timestamp: 'mas',
-        creador: usuario.name,
-        color: colorSeleccionado, // Pasar el color seleccionado a la petición API
-        // Puedes incluir más datos relevantes del canal aquí si lo necesitas
-      });
-
-      console.log('Petición de creación de canal enviada al servidor.');
-
-      const timeChanelCreated = new Date().toISOString(); // Guarda la fecha y hora actual en formato ISO 8601
-
-      const response = await axios.post(
-        "http://localhost:80/juego/api/crear_canal_chat.php",
-        {
-          type: "agregar_canal_chat",
-          nombre_can: nombreCanal,
-          apuesta: parseInt(montoApuesta),
-          creador: usuario.name,
-          creador_mail: usuario.email,
-          timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
-          creador_picture: usuario.picture,
-          color: colorSeleccionado, // Pasar el color seleccionado a la petición API
-        }
-      );
-
-      console.log('Respuesta del servidor:', response.data);
-
-      if (response.data.success) {
-        console.log('Canal agregado exitosamente.');
-        obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
-      } else {
-        console.error("Error al agregar canal:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error al agregar canal:", error);
-    }
+    // Aquí va la lógica para agregar el canal
   };
 
   return (
