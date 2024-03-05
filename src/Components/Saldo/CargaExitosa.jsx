@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+//hola
 
 function CargaExitosa() {
     const location = useLocation();
