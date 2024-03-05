@@ -162,5 +162,5 @@ function Sidebar({ usuario, setCanalActivo }) {
     </div>
   );
 }
-
+//
 export default Sidebar;
