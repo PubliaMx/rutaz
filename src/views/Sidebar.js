@@ -13,6 +13,7 @@ const socket = io('http://localhost:3300'); // Establece la conexión con el ser
 
 function Sidebar({ usuario, setCanalActivo }) {
   const [canales, setCanales] = useState([]);
+  const [canalActivoNombre, setCanalActivoNombre] = useState(""); 
 
   useEffect(() => {
     obtenerCanales();
@@ -109,9 +110,9 @@ function Sidebar({ usuario, setCanalActivo }) {
           {Array.isArray(canales) && canales.length > 0 ? (
           <>
           {canales.map((canal, index) => (
-          <div onClick={()=> setCanalActivo(canal)}>
-              <CanalEnSidebar nombre_cann={canal} id={index} />
-          </div>
+          <div onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}> {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
+          <CanalEnSidebar nombre_cann={canal} id={index} />
+        </div>
           ))}
           </>
       ) : (

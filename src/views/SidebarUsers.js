@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Divider } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import { ExpandMore, Add } from "@material-ui/icons";
 import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
@@ -88,8 +88,9 @@ function SidebarUsers({ usuario, setCanalActivo }) {
           {Array.isArray(canales) && canales.length > 0 ? (
             <>
               {canales.map((canal, index) => (
-                <div onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}> {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
-                  <CanalEnSidebar nombre_cann={canal} id={index} />
+                <div key={index} onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}>
+                  {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
+                  <CanalEnSidebar nombre_cann={canal} id={index} setCanalActivo={setCanalActivo} />
                 </div>
               ))}
             </>

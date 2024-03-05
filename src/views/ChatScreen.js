@@ -89,15 +89,14 @@ function ChatScreen({ canalActivo, usuario }) {
 
   return (
     <div className="chat">
-      <EncabezadoChat nombreCanal={canalActivo} />
-      <div className="chat__messages">
-        {listaMensajes ? (
-          listaMensajes.map((mensaje) => {
-            return <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />;
-          })
-        ) : (
-          <p>No hay mensajes</p>
-        )}
+      return (
+        <div className="chat">
+            {/* Verifica si canalActivo es nulo o vacío */}
+            {canalActivo && canalActivo.trim() !== "" ? (
+                <EncabezadoChat nombreCanal={canalActivo} />
+            ) : (
+                <EncabezadoChat nombreCanal="Ingreso" />
+            )}
         <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
       <div className="chat__input">

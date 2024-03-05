@@ -9,8 +9,7 @@ import '../styles/chat.css';
 
 function ChatPage() {
     const { isAuthenticated, isLoading, user } = useAuth0();
-    const [canalActivo, setCanalActivo] = useState(null); // Cambiado a canalActivo
-    // También deberías definir el estado para el canal activo
+    const [canalActivo, setCanalActivo] = useState("Ingreso"); // Cambiado a canalActivo y configurado por defecto como "Ingreso"
 
     if (isLoading) {
         // Muestra algún indicador de carga mientras se verifica la autenticación del usuario
@@ -22,28 +21,18 @@ function ChatPage() {
             <Cabecera />
             {isAuthenticated ? (
                 <>
-                    <ChatScreen canalActivo={'canalActivo'} usuario={user} />
-                    <div>
-
-                        
-                        <div>
-                    <Sidebar 
-                        setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
-                        usuario={user}
-                    />
+                    <ChatScreen canalActivo={canalActivo} usuario={user} />
+                    <div className="sidebarsContainer">
+                        <Sidebar 
+                            setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
+                            usuario={user}
+                        />
+                        <SidebarUsers 
+                            setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
+                            usuario={user}
+                            canalActivo={canalActivo} // Cambiado a canalActivo
+                        />
                     </div>
-                    <div>
-                    <SidebarUsers 
-                        setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
-                        usuario={user}
-                        canalActivo={canalActivo} // Cambiado a canalActivo
-                    />
-                    </div>
-                    </div>
-
-                    
-
-                    
                 </>
             ) : (
                 <Login />
