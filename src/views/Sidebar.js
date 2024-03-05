@@ -34,8 +34,6 @@ function Sidebar({ usuario, setCanalActivo }) {
 
   // Función para agregar un canal
   const agregarCanal = async () => {
-    console.log('**************');
-    console.log(usuario.picture);
     const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
     if (!nombreCanal) {
       return; // Si el usuario presiona Cancelar, salir de la función
@@ -44,12 +42,41 @@ function Sidebar({ usuario, setCanalActivo }) {
     let montoApuesta;
     while (true) {
       montoApuesta = prompt("Ingresa el monto a apostar");
-      if (!montoApuesta || isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
-        if (montoApuesta === null) {
-          return; // Si el usuario presiona Cancelar, salir de la función
-        }
+      if (montoApuesta === null) {
+        return; // Si el usuario presiona Cancelar, salir de la función
+      } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
         alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
       } else {
+        break;
+      }
+    }
+
+    let colorSeleccionado;
+    while (true) {
+      const colorInput = prompt("Selecciona un color para el canal:\n1. Amarillo\n2. Azul\n3. Verde\n4. Naranja");
+      if (!colorInput) {
+        return; // Si el usuario presiona Cancelar, salir de la función
+      }
+      const opcion = parseInt(colorInput);
+      if (opcion < 1 || opcion > 4) {
+        alert("Por favor, ingresa un número válido entre 1 y 4.");
+      } else {
+        switch (opcion) {
+          case 1:
+            colorSeleccionado = "fichaamarilla";
+            break;
+          case 2:
+            colorSeleccionado = "fichaazul";
+            break;
+          case 3:
+            colorSeleccionado = "fichaverde";
+            break;
+          case 4:
+            colorSeleccionado = "fichanaranja";
+            break;
+          default:
+            break;
+        }
         break;
       }
     }
@@ -58,6 +85,7 @@ function Sidebar({ usuario, setCanalActivo }) {
     socket.emit('chat_new_channel', {
       nombre_canal: nombreCanal,
       apuesta: parseInt(montoApuesta),
+      ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
       timestamp: 'mas',
       creador: usuario.name,
       
@@ -73,6 +101,7 @@ function Sidebar({ usuario, setCanalActivo }) {
           type: "agregar_canal_chat",
           nombre_can: nombreCanal,
           apuesta: parseInt(montoApuesta),
+          ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
           creador: usuario.name,
           creador_mail: usuario.email,
           timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
@@ -100,24 +129,24 @@ function Sidebar({ usuario, setCanalActivo }) {
             <ExpandMore />
             <h4>Estancia de Ingreso</h4>
           </div>
-            <a className="creaCanalText" href="#" onClick={agregarCanal}>
-              <Add className="sidebar__addChannel" />
-              Crear Salón para Juego
-            </a>
+          <a className="creaCanalText" href="#" onClick={agregarCanal}>
+            <Add className="sidebar__addChannel" />
+            Crear Salón para Juego
+          </a>
         </div>
         <div className="sidebar__channelsList">
           {/* Mostrar la lista de canales si canales es un array */}
           {Array.isArray(canales) && canales.length > 0 ? (
-          <>
-          {canales.map((canal, index) => (
-          <div onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}> {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
-          <CanalEnSidebar nombre_cann={canal} id={index} />
-        </div>
-          ))}
-          </>
-      ) : (
-        <p>No hay canales disponibles</p>
-      )}
+            <>
+              {canales.map((canal, index) => (
+                <div onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}> {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
+                  <CanalEnSidebar nombre_cann={canal} id={index} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <p>No hay canales disponibles</p>
+          )}
         </div>
 
         <div className="sidebar__profile">
