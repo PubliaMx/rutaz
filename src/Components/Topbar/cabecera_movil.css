@@ -1,0 +1,116 @@
+ /* Estilos para móviles */
+ @media only screen and (max-width: 700px) {
+    .menu-btn {
+      display: block;
+    }
+  
+    .navbar {
+      display: none; /* Ocultar la barra de navegación para móviles */
+    }
+
+    .barra-top-menu {
+        display: none;
+    }
+  
+    .acumulado {
+        display: none;
+    }
+
+    .Cabecera-button{
+        display: flex;
+        width: 50%;
+        margin-left: 400px;
+        height: 100%;
+        top: 5px;
+        height: 20px;
+        background-color: brown;
+        z-index: 214748367;
+        position: absolute;
+    }
+
+
+    .imagen_textox {
+        margin-left: 60px;
+        width: 88%;
+    }
+
+    .acumuladoContainer {
+        display: none;
+    }
+
+    .hero {
+      height: 100vh;
+    }
+  
+    .info {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .card {
+      width: 80%;
+      margin-bottom: 20px;
+    }
+
+    .gif-container img {
+        margin-left: -6px;
+        position: absolute;
+        overflow: visible;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        animation: animateGif 6s infinite;
+        
+    }
+    
+    @keyframes animateGif {
+        0% {
+            opacity: 1;
+        }
+        33% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 0;
+        }
+        83% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+
+  }
+  
+
+  @media screen and (max-width:700px){
+
+    .Cabecera-button{
+        display: flex;
+    }
+    .Cabecera-nav{
+        width:100%;
+
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        height:0vh;
+        opacity: 0;
+        overflow: hidden;
+        transition: all .5s ease;
+    }
+    .Cabecera-nav.isActive{
+        height:50vh;
+        opacity: 1;
+    }
+    .Cabecera-ul{
+        flex-direction: column;
+    }
+    .Cabecera-li{
+        margin: .5em 0;
+    }
+}

@@ -1,0 +1,8 @@
+.circular-image {
+    width: 66px; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: 66px; /* Ajusta el tamaño de la imagen según sea necesario */
+    border-radius: 50%; /* Esto establece el radio de las esquinas para hacerla circular */
+    overflow: hidden; /* Esto recorta cualquier parte de la imagen que se extienda más allá del radio del círculo */
+    display: inline-block;
+  }
+  

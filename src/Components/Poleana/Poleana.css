@@ -1,0 +1,77 @@
+h1 {
+  font-weight: 100;
+}
+.madre {
+  position: absolute;
+  padding-left: 100px;
+  margin-top: -90px;
+ /*  width: 1000px;
+  height: 800px; */
+  background-size: 10% 100%;
+  background-color: transparent;
+
+}
+
+@media screen and (max-width: 500px) {
+
+
+  .iframe-container {
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    background-size: 100% 100%;
+    background-color: transparent;
+
+    
+  }
+
+  .zoomed-iframe {
+    position: absolute;
+    top: 140px;
+    width: 60%;
+    height: 45%;
+    background-size: 80% 80%;
+    transform: scale(1.62);
+    background-color: transparent;
+    border: none;
+
+  }
+
+
+
+
+  
+}
+
+.tablero {
+    background-size: 100% 100%;
+}
+
+
+@media screen and (min-width: 500px) and ( orientation: landscape ){
+
+
+.iframe-container {
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    background-size: 100% 100%;
+    background-color: transparent;
+
+    
+  }
+
+  .zoomed-iframe {
+    position: absolute;
+    top: 240px;
+    width: 80%;
+    height: 303px;
+    background-size: 100% 100%;
+    transform: scale(1.62);
+    background-color: transparent;
+    border: none;
+
+  }
+
+
+}

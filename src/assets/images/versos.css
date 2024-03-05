@@ -1,0 +1,85 @@
+body {
+    background-color: #2c3246;
+    color: white;
+}
+
+h3 {
+    display: flex;
+    font-family: Roboto;
+    font-size: 33px;
+    text-shadow: 8px 8px 10px #971b7c;
+
+
+}
+
+.prefrase {
+    letter-spacing: 6px;
+}
+
+.lista {
+    margin-left: 30px;
+}
+
+.container {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px 30px;
+    margin-top: -70px;
+    width: 750px;
+    margin-right: 300px;
+    position: absolute;
+}
+
+.item {
+    position: absolute;
+    animation: roll 18s ease 1s infinite backwards;
+    letter-spacing: 7px;
+}
+
+.item:nth-child(1) {
+    animation-delay: 0s;
+    opacity: 0;
+}
+
+.item:nth-child(2) {
+    animation-delay: 3s;
+    opacity: 0;
+}
+
+.item:nth-child(3) {
+    animation-delay: 6s;
+    opacity: 0;
+}
+
+.item:nth-child(4) {
+    animation-delay: 9s;
+    opacity: 0;
+}
+
+.item:nth-child(5) {
+    animation-delay: 12s;
+    opacity: 0;
+}
+
+.item:nth-child(6) {
+    animation-delay: 15s;
+    opacity: 0;
+}
+
+@keyframes roll {
+    0% {
+        opacity: 0;
+        transform: translate3d(0,-70%,0);
+    }
+    2.5%, 15% {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+    27.5%, 100% {
+        opacity: 0;
+        transform: translate3d(0,70%,0);
+    }
+    
+}

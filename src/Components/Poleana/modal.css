@@ -1,0 +1,29 @@
+.modal-title {
+    color: black;
+}
+
+.modal-body-text {
+    color: green;
+}
+
+.modal-container {
+    width: 100%;
+    height: 900px;
+    z-index: 214748367;
+}
+
+.modal-dialog {
+    width: 100% !important;
+    height:650px !important;
+}
+
+.modal-content {
+    width: 100% !important;
+    height:650px !important;
+    
+}
+
+.modal-body {
+    z-index: 214748367;
+    background-color: rgba(50, 163, 50, 0.445);
+}

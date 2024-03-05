@@ -1,0 +1,21 @@
+/* Estilos para la barra de navegación */
+.navbar {
+  margin-bottom: -120px; /* Margen inferior negativo de 120px */
+  z-index: 90000;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+  /* Ocultar la barra de navegación en dispositivos móviles */
+  .navbar {
+    display: none;
+  }
+}
+
+/* Estilos para escritorio */
+@media (min-width: 768px) {
+  /* Expandir la barra de navegación para que ocupe todo el ancho de la página */
+  .navbar-expand-md {
+    width: 100%;
+  }
+}

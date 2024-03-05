@@ -1,0 +1,202 @@
+body {
+	margin: 4px;
+	background: transparent;
+}
+
+
+
+
+
+.negro {
+	background: black;
+}
+
+.clear {
+	clear: both;
+}
+
+.display-container.display-size-12 {
+	margin-bottom: -6px;
+}
+
+
+.display-container {
+	position: relative;
+	margin-right: 1px;
+	float: left;
+}
+
+.display-container div.segment-x,
+.display-container div.segment-y {
+	position: absolute;
+}
+
+.display-container span.segment-border {
+	display: block;
+	position: absolute;
+}
+
+.display-container.display-size-12 {
+	width: 12px;
+	height: 22px;
+}
+
+.display-container.display-size-12 .segment-x {
+	width: 7px;
+	left: 1px;
+	border-bottom: 1px solid #99DD29;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+}
+
+.display-container.display-size-12 .segment-x .segment-border {
+	top: 1px;
+	left: -1px;
+	right: -1px;
+	border-top: 1px solid #C8E91A;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+}
+
+.display-container.display-size-12 .segment-y {
+	height: 7px;
+	width: 0;
+	border-right: 1px solid #C8E91A;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+.display-container.display-size-12 .segment-y .segment-border {
+	position: relative;
+	left: 1px;
+	height: 7px;
+	margin-top: -1px;
+	border-left: 1px solid #C8E91A; /*colorverde */
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+.display-container.display-size-12 .segment-a {
+	top: 0;
+}
+
+.display-container.display-size-12 .segment-b {
+	top: 1px;
+	left: 9px;
+}
+
+.display-container.display-size-12 .segment-c {
+	top: 11px;
+	left: 9px;
+}
+
+.display-container.display-size-12 .segment-d {
+	top: 19px;
+}
+
+.display-container.display-size-12 .segment-e {
+	top: 11px;
+	left: 0px;
+}
+
+.display-container.display-size-12 .segment-f {
+	top: 1px;
+	left: 0px;
+}
+
+.display-container.display-size-12 .segment-g {
+	top: 9px;
+}
+
+.display-no-1 .segment-a,
+.display-no-1 .segment-d,
+.display-no-1 .segment-e,
+.display-no-1 .segment-f,
+.display-no-1 .segment-g {
+	/*display: none;*/
+	opacity: 0.1;
+	filter: alpha(opacity=10);
+}
+
+.display-no-2 .segment-c,
+.display-no-2 .segment-f {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-3 .segment-e,
+.display-no-3 .segment-f {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-4 .segment-a,
+.display-no-4 .segment-d,
+.display-no-4 .segment-e {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-5 .segment-b,
+.display-no-5 .segment-e {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-6 .segment-b {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-7 .segment-d,
+.display-no-7 .segment-e,
+.display-no-7 .segment-f,
+.display-no-7 .segment-g {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-8 {}
+
+.display-no-9 .segment-e {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+.display-no-0 .segment-g {
+	/*display: none;*/
+	opacity: 0.1;
+}
+
+/* clock */
+
+#display-2, #display-4 {
+	margin-right: 60px;
+}
+
+#vertical-center {
+	position: absolute;
+	height: 0;
+	top: 50%;
+	left: 50%
+}
+
+#clock-container {
+	margin-top: -11px;
+	margin-left: -46px;
+	width: 92px;
+	height: 22px;
+}
+
+#clock-container .display-container:last-child {
+	margin: 0;
+}
+
+#clock-container:after {
+	display: block;
+	content: '.';
+	visibility: hidden;
+	clear: both;
+}
+
+
