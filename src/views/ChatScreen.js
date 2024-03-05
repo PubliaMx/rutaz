@@ -89,14 +89,15 @@ function ChatScreen({ canalActivo, usuario }) {
 
   return (
     <div className="chat">
-      return (
-        <div className="chat">
-            {/* Verifica si canalActivo es nulo o vacío */}
-            {canalActivo && canalActivo.trim() !== "" ? (
-                <EncabezadoChat nombreCanal={canalActivo} />
-            ) : (
-                <EncabezadoChat nombreCanal="Ingreso" />
-            )}
+      <EncabezadoChat nombreCanal={canalActivo || "Ingreso"} />
+      <div className="chat__messages">
+        {listaMensajes ? (
+          listaMensajes.map((mensaje) => {
+            return <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />;
+          })
+        ) : (
+          <p>No hay mensajes</p>
+        )}
         <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
       <div className="chat__input">
@@ -109,13 +110,16 @@ function ChatScreen({ canalActivo, usuario }) {
             onChange={(e) => setInputMensaje(e.target.value)}
             placeholder={`Enviar mensaje a #${canalActivo || ""}`}
           />
-          <button
-            disabled={!canalActivo}
-            className="chat__inputButton"
-            type="submit"
-          >
-            <h4> Unirme al juego !! </h4>
-          </button>
+          {/* Expresión ternaria para renderizar el botón "Unirme al juego" dependiendo del valor de canalActivo */}
+          {canalActivo !== "Ingreso" && (
+            <button
+              disabled={!canalActivo}
+              className="chat__inputButton"
+              type="submit"
+            >
+              <h4> Unirme al juego !! </h4>
+            </button>
+          )}
         </form>
       </div>
     </div>
