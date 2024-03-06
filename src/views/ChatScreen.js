@@ -33,17 +33,17 @@ function ChatScreen({ canalActivo, usuario }) {
       id: new Date().getTime(),
     };
 
-    // Actualizar el estado localmente agregando el nuevo mensaje
-    setListaMensajes((prevMensajes) => [...prevMensajes, nuevoMensaje]);
-
     // Guardar el nuevo mensaje en la base de datos
     const docuRef = doc(
       firestore,
       `canales/${canalActivo}/mensajes/${nuevoMensaje.id}`
     );
     setDoc(docuRef, nuevoMensaje)
-      .then(() => console.log('Mensaje guardado en la base de datos'),
-      console.log(canalActivo))
+      .then(() => {
+        console.log('Mensaje guardado en la base de datos');
+        // Actualizar el estado localmente agregando el nuevo mensaje
+        setListaMensajes((prevMensajes) => [...prevMensajes, nuevoMensaje]);
+      })
       .catch((error) => console.error('Error al guardar el mensaje:', error));
 
     setInputMensaje("");
@@ -57,8 +57,8 @@ function ChatScreen({ canalActivo, usuario }) {
       firestore,
       `canales/${canalActivo}/mensajes`
     );
-    const mensajesJeroglificos = await getDocs(coleccionRef);
-    mensajesJeroglificos.forEach((mensaje) => {
+    const mensajesSnapshot = await getDocs(coleccionRef);
+    mensajesSnapshot.forEach((mensaje) => {
       mensajesArr.push(mensaje.data());
     });
     setListaMensajes([...mensajesArr]);
@@ -66,7 +66,9 @@ function ChatScreen({ canalActivo, usuario }) {
   }
 
   useEffect(() => {
-    getListaMensajes();
+    if (canalActivo) {
+      getListaMensajes();
+    }
   }, [canalActivo]);
 
   useEffect(() => {
@@ -90,16 +92,12 @@ function ChatScreen({ canalActivo, usuario }) {
 
   return (
     <div className="chat">
-      return (
-        <div className="chat">
-            {/* Verifica si canalActivo es nulo o vacío */}
-            {canalActivo && canalActivo.trim() !== "" ? (
-                <EncabezadoChat nombreCanal={canalActivo} />
-            ) : (
-                <EncabezadoChat nombreCanal="Ingreso" />
-            )}
-        <div ref={anchor} style={{ marginBottom: "75px" }}></div>
-      </div>
+      {canalActivo && canalActivo.trim() !== "" ? (
+        <EncabezadoChat nombreCanal={canalActivo} />
+      ) : (
+        <EncabezadoChat nombreCanal="Ingreso" />
+      )}
+      <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       <div className="chat__input">
         <AddCircle fontSize="large" />
         <form onSubmit={enviarMensaje}>
@@ -115,9 +113,14 @@ function ChatScreen({ canalActivo, usuario }) {
             className="chat__inputButton"
             type="submit"
           >
-            <h4> Unirme al juego !! </h4>
+            Enviar
           </button>
         </form>
+      </div>
+      <div className="chat__messages">
+        {listaMensajes.map((mensaje) => (
+          <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
+        ))}
       </div>
     </div>
   );
