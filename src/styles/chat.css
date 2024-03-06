@@ -228,6 +228,14 @@ width: 300px;
 height: 45px;
 }
 
+.chat__JoinButton {
+  bottom: 90px;
+  position: absolute;
+  overflow:visible;
+  width: 300px;
+  height: 45px;
+  }
+
 .chat__inputIcons > .MuiSvgIcon-root {
   padding: 5px;
 }

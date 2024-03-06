@@ -122,6 +122,16 @@ function ChatScreen({ canalActivo, usuario }) {
           >
             Enviar
           </button>
+            
+          <button
+              disabled={!canalActivo || canalActivo.trim() == "ingreso"}
+              className="chat__JoinButton"
+              type="submit"
+            >
+              Enviar
+          </button>
+
+
         </form>
       </div>
       
