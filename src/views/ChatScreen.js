@@ -97,7 +97,14 @@ function ChatScreen({ canalActivo, usuario }) {
       ) : (
         <EncabezadoChat nombreCanal="Ingreso" />
       )}
+
+      <div className="chat__messages">
+        {listaMensajes.map((mensaje) => (
+          <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
+        ))}
+      
       <div ref={anchor} style={{ marginBottom: "75px" }}></div>
+      </div>
       <div className="chat__input">
         <AddCircle fontSize="large" />
         <form onSubmit={enviarMensaje}>
@@ -117,11 +124,7 @@ function ChatScreen({ canalActivo, usuario }) {
           </button>
         </form>
       </div>
-      <div className="chat__messages">
-        {listaMensajes.map((mensaje) => (
-          <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
-        ))}
-      </div>
+      
     </div>
   );
 }
