@@ -42,7 +42,8 @@ function ChatScreen({ canalActivo, usuario }) {
       `canales/${canalActivo}/mensajes/${nuevoMensaje.id}`
     );
     setDoc(docuRef, nuevoMensaje)
-      .then(() => console.log('Mensaje guardado en la base de datos'))
+      .then(() => console.log('Mensaje guardado en la base de datos'),
+      console.log(canalActivo))
       .catch((error) => console.error('Error al guardar el mensaje:', error));
 
     setInputMensaje("");
