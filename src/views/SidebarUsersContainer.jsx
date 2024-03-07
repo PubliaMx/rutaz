@@ -56,14 +56,10 @@ function SidebarUsersContainer({ usuario, setCanalActivo }) {
   };
 
   return (
-    <div className="sidebar">
-      <SidebarHeader onAddChannel={agregarCanal} />
+    <div className="sidebarbuttom">
+      <SidebarHeader onAddChannel={agregarCanal} canalActivoNombre='ingreso'/>
       <div className="sidebar__channels">
-        <SidebarChannelList
-          canales={canales}
-          setCanalActivo={setCanalActivo}
-          setCanalActivoNombre={setCanalActivoNombre}
-        />
+       
         <UserProfile usuario={usuario} />
       </div>
     </div>

@@ -121,8 +121,8 @@ function Sidebar({ usuario, setCanalActivo }) {
 
   return (
     <div className="sidebar zidebar">
-      <div className="separador"></div>
-      <div className="sidebar__top">Juegos</div>
+      <div className="separador2"></div>
+      <div className="sidebar__top fixed">Juegos</div>
       <div className="sidebar__channels">
         <div className="sidebar__chanelsHeader">
           <div className="sidebar__header">

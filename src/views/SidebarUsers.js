@@ -79,7 +79,7 @@ function SidebarUsers({ usuario, setCanalActivo }) {
         <div className="sidebar__chanelsHeader">
           <div className="sidebar__header">
             <ExpandMore />
-            <h4>Poleana</h4>
+            <h4>Poleanax</h4>
           </div>
           <Add className="sidebar__addChannel" onClick={agregarCanal} />
         </div>

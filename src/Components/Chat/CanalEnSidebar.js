@@ -30,7 +30,7 @@ function CanalEnSidebar({ nombre_cann, id }) {
       <div className="canalEnListaContenedor">
         <div className="nombreCanal">
           <span className="sidebarChannel__hash">#</span>
-          <span className="primerasCincoLetras">{nombre_cann.substring(0, 5)}</span>
+          <span className="primerasCincoLetras">{nombre_cann.substring(0, 8)}</span>
         </div>
         <div className="apuestaJuego">
           <h3>{canalInfo ? `$${canalInfo.apuesta}` : null}</h3>

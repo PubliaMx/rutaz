@@ -10,3 +10,20 @@
     overflow: hidden; /* Esto recorta cualquier parte de la imagen que se extienda más allá del radio del círculo */
 
   }
+
+  .circular-image-sesion {
+    width: 32px; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: 32px; /* Ajusta el tamaño de la imagen según sea necesario */
+    border-radius: 50%; /* Esto establece el radio de las esquinas para hacerla circular */
+    overflow: hidden; /* Esto recorta cualquier parte de la imagen que se extienda más allá del radio del círculo */
+    display:inline ;
+    margin-top: -70px;
+    margin-left: 90px;
+    
+  }
+
+  .logout {
+    display: flex;
+    margin-left: -12px;
+    top: 15px;
+  }
