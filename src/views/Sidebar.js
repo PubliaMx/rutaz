@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Divider } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
-import io from "socket.io-client"; // Importa el cliente de Socket.IO
 import TuSaldo from "../Components/Saldo/TuSaldo";
-import agregarCanal from '../Components/Chat/AgregarCanal.jsx'
+import AgregarCanal from '../Components/Chat/AgregarCanal'; // Importa el componente AgregarCanal
 
-
-import { ExpandMore, Add, Mic, Settings, Headset } from "@material-ui/icons";
+import { ExpandMore } from "@material-ui/icons"; // Importa el icono ExpandMore de Material-UI
 
 import firebaseApp from "../firebase/credenciales";
 import {
@@ -16,36 +14,20 @@ import {
   doc,
   setDoc,
   getDocs,
-} from "firebase/firestore";
-import { getAuth, signOut } from "firebase/auth";
-const firestore = getFirestore(firebaseApp);
-const auth = getAuth(firebaseApp);
+} from "firebase/firestore"; // Importa las funciones de Firestore
+
+const firestore = getFirestore(firebaseApp); // Inicializa Firestore con la configuración de Firebase
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT;
 
-const socket = io("http://localhost:3300"); // Establece la conexión con el servidor de Socket.IO
-
 function Sidebar({ usuario, setCanalActivo }) {
   const [canales, setCanales] = useState([]);
-  const [canalActivoNombre, setCanalActivoNombre] = useState("");
-
-  async function getCanales() {
-    const canalesArr = [];
-    const collectionRef = collection(firestore, "canales");
-    const canalesCifrados = await getDocs(collectionRef);
-    canalesCifrados.forEach((canalCifrado) => {
-      canalesArr.push(canalCifrado.data());
-    });
-
-    setCanales(canalesArr);
-  }
 
   useEffect(() => {
     obtenerCanales();
   }, []);
 
-  // Función para obtener la lista de canales desde la API
   const obtenerCanales = async () => {
     try {
       const response = await axios.post(
@@ -58,24 +40,6 @@ function Sidebar({ usuario, setCanalActivo }) {
     }
   };
 
-  // Función para agregar un canal
- /*  function agregarCanal() {
-    const nombreCanal = prompt("¿Cuál es el nombre del canal?");
-    if (nombreCanal) {
-      const docuRef = doc(firestore, `canales/${nombreCanal}`);
-      setDoc(docuRef, {
-        id: new Date().getTime(),
-        nombre: nombreCanal,
-      });
-
-      obtenerCanales();
-    }
-  }
-
-  useEffect(() => {
-    obtenerCanales();
-  }, []); */
-
   return (
     <div className="sidebar zidebar">
       <div className="separador2"></div>
@@ -86,10 +50,8 @@ function Sidebar({ usuario, setCanalActivo }) {
             <ExpandMore />
             <h4>Estancia de Ingreso</h4>
           </div>
-          <a className="creaCanalText" href="#" onClick={agregarCanal}>
-            <agregarCanal className="sidebar__addChannel" />
-            Crear Salón para Juego
-          </a>
+          {/* Renderiza el componente AgregarCanal y pasa las propiedades necesarias */}
+          <AgregarCanal obtenerCanales={obtenerCanales} nombreUsuario={usuario.name} />
         </div>
         <div className="sidebar__channelsList">
           {/* Mostrar la lista de canales si canales es un array */}
@@ -100,7 +62,6 @@ function Sidebar({ usuario, setCanalActivo }) {
                   key={index}
                   onClick={() => {
                     setCanalActivo(canal);
-                    setCanalActivoNombre(canal);
                   }}
                 >
                   {/* Agrega la clave única */}

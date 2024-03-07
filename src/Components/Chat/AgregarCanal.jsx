@@ -1,51 +1,110 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Add } from "@material-ui/icons"; // Importa el icono Add de Material-UI
+import { Add } from "@material-ui/icons";
+import axios from "axios"; // Importa axios para hacer solicitudes HTTP
+import io from "socket.io-client"; // Importa el cliente de Socket.IO
 
-// Importaciones de Firebase
-import firebaseApp from "../../firebase/credenciales";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDocs,
-} from "firebase/firestore";
-import { getAuth, signOut } from "firebase/auth";
-
-// Inicialización de Firebase
-const firestore = getFirestore(firebaseApp);
-const auth = getAuth(firebaseApp);
-
-// Variables de entorno
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT;
 
-function AgregarCanal({ obtenerCanales }) {
+const socket = io('http://localhost:3300'); // Establece la conexión con el servidor de Socket.IO
+
+function AgregarCanal({ obtenerCanales, usuario }) {
   const [canales, setCanales] = useState([]);
 
   useEffect(() => {
     obtenerCanales();
   }, []);
 
-  function AgregarCanal() {
-    const nombreCanal = window.prompt('Ingresa el nombre del canal');
-    if (nombreCanal) {
-      const docuRef = doc(firestore, `canales/${nombreCanal}`);
-      setDoc(docuRef, {
-        id: new Date().getTime(),
-        nombre: nombreCanal,
-      }).then(() => {
-        obtenerCanales();
-      }).catch(error => {
-        console.error("Error al agregar canal:", error);
-      });
+  // Función para agregar un canal
+  const agregarCanal = async () => {
+    const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
+    if (!nombreCanal) {
+      return; // Si el usuario presiona Cancelar, salir de la función
     }
-  }
+
+    let montoApuesta;
+    while (true) {
+      montoApuesta = prompt("Ingresa el monto a apostar");
+      if (montoApuesta === null) {
+        return; // Si el usuario presiona Cancelar, salir de la función
+      } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
+        alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
+      } else {
+        break;
+      }
+    }
+
+    let colorSeleccionado;
+    while (true) {
+      const colorInput = prompt("Selecciona un color para el canal:\n1. Amarillo\n2. Azul\n3. Verde\n4. Naranja");
+      if (!colorInput) {
+        return; // Si el usuario presiona Cancelar, salir de la función
+      }
+      const opcion = parseInt(colorInput);
+      if (opcion < 1 || opcion > 4) {
+        alert("Por favor, ingresa un número válido entre 1 y 4.");
+      } else {
+        switch (opcion) {
+          case 1:
+            colorSeleccionado = "fichaamarilla";
+            break;
+          case 2:
+            colorSeleccionado = "fichaazul";
+            break;
+          case 3:
+            colorSeleccionado = "fichaverde";
+            break;
+          case 4:
+            colorSeleccionado = "fichanaranja";
+            break;
+          default:
+            break;
+        }
+        break;
+      }
+    }
+
+    // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
+    socket.emit('chat_new_channel', {
+      nombre_canal: nombreCanal,
+      apuesta: parseInt(montoApuesta),
+      ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
+      timestamp: 'mas',
+      creador: usuario.name,
+      
+      // Puedes incluir más datos relevantes del canal aquí si lo necesitas
+    });
+
+    try {
+      const timeChanelCreated = new Date().toISOString(); // Guarda la fecha y hora actual en formato ISO 8601
+
+      const response = await axios.post(
+        "http://localhost:80/juego/api/crear_canal_chat.php",
+        {
+          type: "agregar_canal_chat",
+          nombre_can: nombreCanal,
+          apuesta: parseInt(montoApuesta),
+          ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
+          creador: usuario.name,
+          creador_mail: usuario.email,
+          timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
+          creador_picture: usuario.picture,
+        }
+      );
+
+      if (response.data.success) {
+        obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
+      } else {
+        console.error("Error al agregar canal:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error al agregar canal:", error);
+    }
+  };
 
   return (
-    <a className="creaCanalText" href="#" onClick={AgregarCanal}>
-      <Add className="sidebar__addChannel" /> {/* Utiliza el icono Add aquí */}
+    <a className="creaCanalText" href="#" onClick={agregarCanal}>
+      <Add className="sidebar__addChannel" />
       Crear Salón para Juego
     </a>
   );
