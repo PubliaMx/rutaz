@@ -24,7 +24,7 @@ function SidebarHeader({ onAddChannel, canalActivo }) {
     <div className="sidebar__channelsList">
          
 
-          <UsuariosJuego canalActivo={canalActivo} />
+          <CanalEnSidebar canalActivo={canalActivo} />
 
          
         </div>
