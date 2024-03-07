@@ -4,6 +4,8 @@ import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
 import io from "socket.io-client"; // Importa el cliente de Socket.IO
 import TuSaldo from "../Components/Saldo/TuSaldo";
+import agregarCanal from '../Components/Chat/AgregarCanal.jsx'
+
 
 import { ExpandMore, Add, Mic, Settings, Headset } from "@material-ui/icons";
 
@@ -57,7 +59,7 @@ function Sidebar({ usuario, setCanalActivo }) {
   };
 
   // Función para agregar un canal
-  function agregarCanal() {
+ /*  function agregarCanal() {
     const nombreCanal = prompt("¿Cuál es el nombre del canal?");
     if (nombreCanal) {
       const docuRef = doc(firestore, `canales/${nombreCanal}`);
@@ -72,7 +74,7 @@ function Sidebar({ usuario, setCanalActivo }) {
 
   useEffect(() => {
     obtenerCanales();
-  }, []);
+  }, []); */
 
   return (
     <div className="sidebar zidebar">
@@ -85,7 +87,7 @@ function Sidebar({ usuario, setCanalActivo }) {
             <h4>Estancia de Ingreso</h4>
           </div>
           <a className="creaCanalText" href="#" onClick={agregarCanal}>
-            <Add className="sidebar__addChannel" />
+            <agregarCanal className="sidebar__addChannel" />
             Crear Salón para Juego
           </a>
         </div>
