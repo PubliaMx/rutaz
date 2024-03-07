@@ -11,12 +11,12 @@ const LogoutButton = () => {
     return (
         <>
         <span>
-            <button onClick={() => logout()}>
+            <button className='logout' onClick={() => logout()}>
                 Cerrar Sesión
             </button>
         </span>
         <span>
-        <img className="circular-image" src={user.picture} />
+        <img className="circular-image-sesion" src={user.picture} />
     </span>
     </>
     )

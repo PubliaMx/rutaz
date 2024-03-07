@@ -4,12 +4,27 @@ import EncabezadoChat from "../Components/Chat/EncabezadoChat";
 import Mensaje from "../Components/Chat/Mensaje";
 import { AddCircle } from "@material-ui/icons";
 import firebaseApp from "../firebase/credenciales";
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
 const firestore = getFirestore(firebaseApp);
 
 function ChatScreen({ canalActivo, usuario }) {
+  
   const [inputMensaje, setInputMensaje] = useState("");
   const [listaMensajes, setListaMensajes] = useState([]);
+  const [button, setButton] = useState(true); // Inicializar button como true
+  const [cargandoMensajes, setCargandoMensajes] = useState(true); // Estado para controlar si los mensajes se están cargando o no
+  
+  useEffect(() => {
+    // Actualizar el estado de button según el valor de canalActivo
+    if (!canalActivo || canalActivo === 'Ingreso') {
+      setButton(true);
+    } else {
+      setButton(false);
+    }
+  }, [canalActivo]); // Ejecutar efecto cada vez que cambia canalActivo
+  
+
   const anchor = useRef();
 
   function filtrarContenido(textoOriginal) {
@@ -33,16 +48,17 @@ function ChatScreen({ canalActivo, usuario }) {
       id: new Date().getTime(),
     };
 
-    // Actualizar el estado localmente agregando el nuevo mensaje
-    setListaMensajes((prevMensajes) => [...prevMensajes, nuevoMensaje]);
-
     // Guardar el nuevo mensaje en la base de datos
     const docuRef = doc(
       firestore,
       `canales/${canalActivo}/mensajes/${nuevoMensaje.id}`
     );
     setDoc(docuRef, nuevoMensaje)
-      .then(() => console.log('Mensaje guardado en la base de datos'))
+      .then(() => {
+        console.log('Mensaje guardado en la base de datos');
+        // Actualizar el estado localmente agregando el nuevo mensaje
+        setListaMensajes((prevMensajes) => [...prevMensajes, nuevoMensaje]);
+      })
       .catch((error) => console.error('Error al guardar el mensaje:', error));
 
     setInputMensaje("");
@@ -56,16 +72,19 @@ function ChatScreen({ canalActivo, usuario }) {
       firestore,
       `canales/${canalActivo}/mensajes`
     );
-    const mensajesJeroglificos = await getDocs(coleccionRef);
-    mensajesJeroglificos.forEach((mensaje) => {
+    const mensajesSnapshot = await getDocs(coleccionRef);
+    mensajesSnapshot.forEach((mensaje) => {
       mensajesArr.push(mensaje.data());
     });
     setListaMensajes([...mensajesArr]);
+    setCargandoMensajes(false); // Indicar que ya no se están cargando los mensajes
     console.log('Consulta de mensajes finalizada');
   }
 
   useEffect(() => {
-    getListaMensajes();
+    if (canalActivo) {
+      getListaMensajes();
+    }
   }, [canalActivo]);
 
   useEffect(() => {
@@ -89,16 +108,25 @@ function ChatScreen({ canalActivo, usuario }) {
 
   return (
     <div className="chat">
-      return (
-        <div className="chat">
-            {/* Verifica si canalActivo es nulo o vacío */}
-            {canalActivo && canalActivo.trim() !== "" ? (
-                <EncabezadoChat nombreCanal={canalActivo} />
-            ) : (
-                <EncabezadoChat nombreCanal="Ingreso" />
-            )}
+      {canalActivo && canalActivo.trim() !== "" ? (
+        <EncabezadoChat nombreCanal={canalActivo} />
+      ) : (
+        <EncabezadoChat nombreCanal="Ingreso" />
+      )}
+
+      <div className="chat__messages">
+        {listaMensajes.length > 0 ? (
+          listaMensajes.map((mensaje) => (
+            <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
+          ))
+        ) : (
+          cargandoMensajes ? (
+            <div>Cargando mensajes...</div>
+          ) : null
+        )}
         <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
+      
       <div className="chat__input">
         <AddCircle fontSize="large" />
         <form onSubmit={enviarMensaje}>
@@ -114,10 +142,22 @@ function ChatScreen({ canalActivo, usuario }) {
             className="chat__inputButton"
             type="submit"
           >
-            <h4> Unirme al juego !! </h4>
+            <SendRoundedIcon style={{ fontSize: 33 }} />
           </button>
+            
+          <button
+              disabled={button}
+              className="chat__JoinButton"
+              type="submit"
+            >
+              Unirme a Juego: {canalActivo}
+              <br></br> Con apuesta de:
+          </button>
+
+
         </form>
       </div>
+      
     </div>
   );
 }
