@@ -51,7 +51,7 @@ function Sidebar({ usuario, setCanalActivo }) {
             <h4>Estancia de Ingreso</h4>
           </div>
           {/* Renderiza el componente AgregarCanal y pasa las propiedades necesarias */}
-          <AgregarCanal usuario={usuario.name} obtenerCanales={obtenerCanales}  />
+          <AgregarCanal obtenerCanales={obtenerCanales} nombreUsuario={usuario.name} usuario={usuario} />
         </div>
         <div className="sidebar__channelsList">
           {/* Mostrar la lista de canales si canales es un array */}

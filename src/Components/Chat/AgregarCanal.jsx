@@ -8,7 +8,7 @@ const api_port = process.env.REACT_APP_API_PORT;
 
 const socket = io('http://localhost:3300'); // Establece la conexión con el servidor de Socket.IO
 
-function AgregarCanal({ obtenerCanales, usuario }) {
+function AgregarCanal({ obtenerCanales, usuario, usuarioName }) {
   const [canales, setCanales] = useState([]);
 
   useEffect(() => {
@@ -76,6 +76,7 @@ function AgregarCanal({ obtenerCanales, usuario }) {
     });
 
     try {
+      //alert(usuario.name);
       const timeChanelCreated = new Date().toISOString(); // Guarda la fecha y hora actual en formato ISO 8601
 
       const response = await axios.post(
@@ -93,11 +94,15 @@ function AgregarCanal({ obtenerCanales, usuario }) {
       );
 
       if (response.data.success) {
+        //alert('canal creado con éxito succes');
         obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
+
       } else {
+        alert('canal creado con éxito error');
         console.error("Error al agregar canal:", response.data.message);
       }
     } catch (error) {
+      //alert('canal creado con éxito error2');
       console.error("Error al agregar canal:", error);
     }
   };
