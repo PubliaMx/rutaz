@@ -5,7 +5,7 @@ import guest from '../../assets/guest.webp';
 function CanalEnSidebar({ nombre_cann, id }) {
   const [canalInfo, setCanalInfo] = useState(null);
   
-//
+
   useEffect(() => {
     obtenerInfoCanal();
   }, []);
