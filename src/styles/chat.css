@@ -253,23 +253,48 @@ code {
   flex: 1;
 }
 
+
+.botonsote {
+  font-size: 40px;
+  display: none;
+}
+
 .chat__inputButton {
 right: 320px;
-bottom: 9px;
+bottom: 33px;
 position: absolute;
 overflow:visible;
 width: 100px;
-height: 45px;
+height: 65px;
+display: flex;
+align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #20957d; /* Color primario de Discord */
+  color: #ffffff; /* Color del texto */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 30px;
+}
+
+.chat__inputButton:hover {
+  background-color: #677bc4; /* Cambio de color al pasar el mouse */
 }
 
 .chat__JoinButton {
-  bottom: 90px;
-  right: 250px;
+  bottom: 123px;
+  right: 333px;
   position: absolute;
   overflow:visible;
   width: 300px;
   height: 45px;
   }
+
+  .chat__JoinButton[disabled] {
+    display: none;
+    }
 
 .chat__inputIcons > .MuiSvgIcon-root {
   padding: 5px;

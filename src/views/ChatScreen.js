@@ -4,7 +4,9 @@ import EncabezadoChat from "../Components/Chat/EncabezadoChat";
 import Mensaje from "../Components/Chat/Mensaje";
 import { AddCircle } from "@material-ui/icons";
 import firebaseApp from "../firebase/credenciales";
+//import SendIcon from '@mui/icons-material/Send';
 
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
 const firestore = getFirestore(firebaseApp);
 
@@ -135,7 +137,7 @@ function ChatScreen({ canalActivo, usuario }) {
             className="chat__inputButton"
             type="submit"
           >
-            Enviar
+            <SendRoundedIcon style={{ fontSize: 33 }} />
           </button>
             
           <button
