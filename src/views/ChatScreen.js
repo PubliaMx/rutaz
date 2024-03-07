@@ -9,9 +9,23 @@ import firebaseApp from "../firebase/credenciales";
 const firestore = getFirestore(firebaseApp);
 
 function ChatScreen({ canalActivo, usuario }) {
+  
   const [inputMensaje, setInputMensaje] = useState("");
   const [listaMensajes, setListaMensajes] = useState([]);
+  const [button, setButton] = useState(true); // Inicializar button como true
+  
+  useEffect(() => {
+    // Actualizar el estado de button según el valor de canalActivo
+    if (!canalActivo || canalActivo === 'Ingreso') {
+      setButton(true);
+    } else {
+      setButton(false);
+    }
+  }, [canalActivo]); // Ejecutar efecto cada vez que cambia canalActivo
+  
+
   const anchor = useRef();
+  //const [boton, setBoton] = useState(false); // Declaración correcta de boton como estado
 
   function filtrarContenido(textoOriginal) {
     const groserías = ["tonto", "hdp", "mk"];
@@ -125,11 +139,12 @@ function ChatScreen({ canalActivo, usuario }) {
           </button>
             
           <button
-              disabled={canalActivo || canalActivo == "ingreso"}
+              disabled={button}
               className="chat__JoinButton"
               type="submit"
             >
-              Enviar
+              Unirme a Juego: {canalActivo}
+              <br></br> Con apuesta de:
           </button>
 
 
