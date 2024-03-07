@@ -12,7 +12,7 @@ const api_port = process.env.REACT_APP_API_PORT;
 
 const socket = io("http://localhost:3300");
 
-function SidebarUsersContainer({ usuario, setCanalActivo }) {
+function SidebarUsersContainer({ usuario, setCanalActivo, canalActivo }) {
   const { apiUrl, apiPort } = useApi();
   const apiPath = `${apiUrl}:${apiPort}/juego/api/textChat.php`;
   const [canales, setCanales] = useState([]);
@@ -57,7 +57,7 @@ function SidebarUsersContainer({ usuario, setCanalActivo }) {
 
   return (
     <div className="sidebarbuttom">
-      <SidebarHeader onAddChannel={agregarCanal} canalActivoNombre='ingreso'/>
+      <SidebarHeader onAddChannel={agregarCanal} canalActivo={canalActivo}/>
       <div className="sidebar__channels">
        
         <UserProfile usuario={usuario} />
