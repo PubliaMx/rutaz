@@ -1,4 +1,11 @@
-
+.cargadorMensajes {
+  font-size: 1.2rem;
+  background-color: #666;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
 
 /* ELIMINAMOS LOS ESTILOS DE NAVEGADOR */
 @import url("./reset.css");

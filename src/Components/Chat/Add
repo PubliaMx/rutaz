@@ -1,0 +1,37 @@
+import React from "react";
+import axios from "axios";
+
+function AgregarCanal() {
+  const agregarCanal = async () => {
+    const nombreCanal = prompt("Por favor, ingrese el nombre del canal");
+    if (nombreCanal) {
+      try {
+        console.log("Nombre del canal ingresado:", nombreCanal);
+        const response = await axios.post(
+          "http://localhost:80/juego/api/crear_canal_chat.php",
+          {
+            type: "agregar_canal_chat",
+            nombre_can: nombreCanal,
+          }
+        );
+
+        if (response.data.success) {
+          console.log("Canal agregado exitosamente");
+          // Aquí puedes agregar lógica adicional si es necesario
+        } else {
+          console.error("Error al agregar canal:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error al agregar canal:", error);
+      }
+    }
+  };
+
+  return (
+    <a className="sidebar__addChannel" onClick={agregarCanal}>
+      Crear Salón para Juego
+    </a>
+  );
+}
+
+export default AgregarCanal;

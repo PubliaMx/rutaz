@@ -5,6 +5,7 @@ import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
 import io from "socket.io-client"; // Importa el cliente de Socket.IO
 import TuSaldo from "../Components/Saldo/TuSaldo";
+import CrearCanal from '../Components/Chat/CrearCanal';
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT; 
@@ -48,7 +49,7 @@ function Sidebar({ usuario, setCanalActivo }) {
             <h4>Estancia de Ingreso</h4>
           </div>
           <a className="creaCanalText" href="#" onClick={agregarCanal}>
-            <Add className="sidebar__addChannel" />
+            <CrearCanal className="sidebar__addChannel" />
             Crear Salón para Juego
           </a>
         </div>

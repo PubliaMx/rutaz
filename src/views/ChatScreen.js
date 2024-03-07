@@ -115,15 +115,12 @@ function ChatScreen({ canalActivo, usuario }) {
       )}
 
       <div className="chat__messages">
-        {listaMensajes.length > 0 ? (
-          listaMensajes.map((mensaje) => (
-            <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
-          ))
-        ) : (
-          cargandoMensajes ? (
-            <div>Cargando mensajes...</div>
-          ) : null
+        {cargandoMensajes && (
+          <div className="cargadorMensajes">Cargando mensajes...</div>
         )}
+        {!cargandoMensajes && listaMensajes.map((mensaje) => (
+          <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
+        ))}
         <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
       

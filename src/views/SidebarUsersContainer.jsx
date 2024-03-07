@@ -32,7 +32,7 @@ function SidebarUsersContainer({ usuario, setCanalActivo, canalActivo }) {
   };
 
   const agregarCanal = async () => {
-    const nombreCanal = prompt("Por favor, ingrese el nombre del canal");
+    const nombreCanal = prompt("Por favor, ingrese el nombre del canale");
     if (nombreCanal) {
       socket.emit("chat_new_channel", {
         nombre_canal: "hola",
