@@ -70,7 +70,7 @@ function AgregarCanal({ obtenerCanales, usuario }) {
       apuesta: parseInt(montoApuesta),
       ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
       timestamp: 'mas',
-      creador: usuario.name,
+      creador: usuario,
       
       // Puedes incluir más datos relevantes del canal aquí si lo necesitas
     });
