@@ -115,18 +115,18 @@ function ChatScreen({ canalActivo, usuario }) {
       )}
 
       <div className="chat__messages">
-        {/* Mostrar el mensaje de "Cargando mensajes..." mientras se cargan los mensajes */}
-        {cargandoMensajes ? (
-          <div>Cargando mensajes...</div>
-        ) : (
-          /* Mostrar los mensajes si ya se cargaron */
+        {listaMensajes.length > 0 ? (
           listaMensajes.map((mensaje) => (
             <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
           ))
+        ) : (
+          cargandoMensajes ? (
+            <div>Cargando mensajes...</div>
+          ) : null
         )}
-      
-      <div ref={anchor} style={{ marginBottom: "75px" }}></div>
+        <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
+      
       <div className="chat__input">
         <AddCircle fontSize="large" />
         <form onSubmit={enviarMensaje}>
