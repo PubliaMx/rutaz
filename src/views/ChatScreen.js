@@ -4,8 +4,6 @@ import EncabezadoChat from "../Components/Chat/EncabezadoChat";
 import Mensaje from "../Components/Chat/Mensaje";
 import { AddCircle } from "@material-ui/icons";
 import firebaseApp from "../firebase/credenciales";
-//import SendIcon from '@mui/icons-material/Send';
-
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
 const firestore = getFirestore(firebaseApp);
@@ -15,6 +13,7 @@ function ChatScreen({ canalActivo, usuario }) {
   const [inputMensaje, setInputMensaje] = useState("");
   const [listaMensajes, setListaMensajes] = useState([]);
   const [button, setButton] = useState(true); // Inicializar button como true
+  const [cargandoMensajes, setCargandoMensajes] = useState(true); // Estado para controlar si los mensajes se están cargando o no
   
   useEffect(() => {
     // Actualizar el estado de button según el valor de canalActivo
@@ -27,7 +26,6 @@ function ChatScreen({ canalActivo, usuario }) {
   
 
   const anchor = useRef();
-  //const [boton, setBoton] = useState(false); // Declaración correcta de boton como estado
 
   function filtrarContenido(textoOriginal) {
     const groserías = ["tonto", "hdp", "mk"];
@@ -79,6 +77,7 @@ function ChatScreen({ canalActivo, usuario }) {
       mensajesArr.push(mensaje.data());
     });
     setListaMensajes([...mensajesArr]);
+    setCargandoMensajes(false); // Indicar que ya no se están cargando los mensajes
     console.log('Consulta de mensajes finalizada');
   }
 
@@ -116,9 +115,15 @@ function ChatScreen({ canalActivo, usuario }) {
       )}
 
       <div className="chat__messages">
-        {listaMensajes.map((mensaje) => (
-          <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
-        ))}
+        {/* Mostrar el mensaje de "Cargando mensajes..." mientras se cargan los mensajes */}
+        {cargandoMensajes ? (
+          <div>Cargando mensajes...</div>
+        ) : (
+          /* Mostrar los mensajes si ya se cargaron */
+          listaMensajes.map((mensaje) => (
+            <Mensaje key={mensaje.id} mensajeFirebase={mensaje} />
+          ))
+        )}
       
       <div ref={anchor} style={{ marginBottom: "75px" }}></div>
       </div>
