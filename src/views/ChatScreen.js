@@ -5,6 +5,7 @@ import Mensaje from "../Components/Chat/Mensaje";
 import { AddCircle } from "@material-ui/icons";
 import firebaseApp from "../firebase/credenciales";
 
+
 const firestore = getFirestore(firebaseApp);
 
 function ChatScreen({ canalActivo, usuario }) {

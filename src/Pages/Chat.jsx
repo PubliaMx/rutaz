@@ -4,8 +4,16 @@ import Login from "../views/Login";
 import ChatScreen from "../views/ChatScreen";
 import Cabecera from "../Components/Topbar/Cabecera";
 import Sidebar from "../views/Sidebar";
-import SidebarUsers from "../views/SidebarUsers";
+import SidebarUsersContainer from "../views/SidebarUsersContainer";
 import '../styles/chat.css';
+
+import SidebarChannelList from "../views/SidebarChannelList";
+import ChannelItem from "../views/ChannelItem";
+
+
+//import ChannelItem from "../views/ChannelItem"; // Ajusta la ruta según la ubicación real de ChannelItem
+
+
 
 function ChatPage() {
     const { isAuthenticated, isLoading, user } = useAuth0();
@@ -27,7 +35,7 @@ function ChatPage() {
                             setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
                             usuario={user}
                         />
-                        <SidebarUsers 
+                        <SidebarUsersContainer 
                             setCanalActivo={setCanalActivo} // Cambiado a setCanalActivo
                             usuario={user}
                             canalActivo={canalActivo} // Cambiado a canalActivo
