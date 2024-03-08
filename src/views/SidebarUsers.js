@@ -1,109 +1,91 @@
 import React, { useState, useEffect } from "react";
-import { Avatar } from "@material-ui/core";
-import { ExpandMore, Add } from "@material-ui/icons";
-import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import axios from "axios";
-import io from "socket.io-client"; // Importa el cliente de Socket.IO
 
-import useApi from "../Hooks/connApi";
-
-import useApiConsulta from "../Hooks/useApiConsulta"; // Importa el hook
-
-const api_URL = process.env.REACT_APP_API_URL;
-const api_port = process.env.REACT_APP_API_PORT;
-
-const socket = io("http://localhost:3300"); // Establece la conexión con el servidor de Socket.IO
-
-function SidebarUsers({ usuario, setCanalActivo }) {
-  const { apiUrl, apiPort } = useApi();
-  const apiPath = `${apiUrl}:${apiPort}/juego/api/textChat.php`;
-  const [canales, setCanales] = useState([]);
-  const [canalActivoNombre, setCanalActivoNombre] = useState(""); // Variable de estado para el nombre del canal activo
+function SidebarUsers({ nombre_cann, id }) {
+  const [canalInfo, setCanalInfo] = useState(null);
+  const JuegoEstatico = "buenisimo";
 
   useEffect(() => {
-    obtenerCanales();
+    obtenerInfoCanal();
   }, []);
 
-  // Función para obtener la lista de canales desde la API
-  const obtenerCanales = async () => {
+  const obtenerInfoCanal = async () => {
     try {
-      console.log("siiiii  " + apiPath);
       const response = await axios.post(
-        "http://localhost:80/juego/api/textChat.php",
-        { type: "canales_chat" }
+        "http://localhost:80/juego/api/juegoInfo.php",
+        { type: "CanalInfo", JuegoId: JuegoEstatico }
       );
-      console.log("******* Iniciando api consulta");
-      console.log("Canales:", response.data);
-      setCanales(response.data.canales);
+      const canalInfoData = response.data;
+
+      // Procesar los datos del canal antes de guardarlos en el estado
+const processedCanalInfo = {
+  ...canalInfoData,
+  usuarios: Array.isArray(canalInfoData.usuarios) ? canalInfoData.usuarios : [],
+  usuario_pictures: Array.isArray(canalInfoData.usuario_pictures) ? canalInfoData.usuario_pictures : [],
+  fichas: Array.isArray(canalInfoData.fichas) ? canalInfoData.fichas : [],
+  usuarios: canalInfoData.usuarios.map((usuario, index) => ({
+    ...usuario,
+    colorFicha: canalInfoData.fichas[index] === "fichaverde" ? "verdes" :
+                canalInfoData.fichas[index] === "fichaanaranja" ? "naranjas" :
+                canalInfoData.fichas[index] === "fichaazul" ? "azules" :
+                canalInfoData.fichas[index] === "fichaamarilla" ? "amarillas" : ""
+  }))
+};
+
+      
+
+
+      setCanalInfo(processedCanalInfo);
     } catch (error) {
-      console.error("Error al obtener los canales:", error);
+      console.error("Error al obtener la información del canal:", error);
     }
   };
 
-  // Función para agregar un canal
-  const agregarCanal = async () => {
-    const nombreCanal = prompt("Por favor, ingrese el nombre del canal");
-    if (nombreCanal) {
-      // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
-      socket.emit("chat_new_channel", {
-        nombre_canal: "hola",
-        timestamp: "mas",
-        // Puedes incluir más datos relevantes del canal aquí si lo necesitas
-      });
-      console.log("emitiendo canal nuevo");
-      try {
-        const response = await axios.post(
-          "http://localhost:80/juego/api/crear_canal_chat.php",
-          {
-            type: "agregar_canal_chat",
-            nombre_can: nombreCanal,
-          }
-        );
 
-        if (response.data.success) {
-          obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
-        } else {
-          console.error("Error al agregar canal:", response.data.message);
-        }
-        obtenerCanales();
-      } catch (error) {
-        console.error("Error al agregar canal:", error);
-      }
+// Función para formatear la fecha de creación del canal
+const formatCreationDate = (fechaCreacion) => {
+  const ahora = new Date();
+  const creadaEn = new Date(fechaCreacion);
+  const diferencia = Math.abs(ahora - creadaEn);
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  const meses = Math.floor(dias / 30);
+  const años = Math.floor(meses / 12);
+
+  let fechaFormateada = `${creadaEn.toLocaleDateString()} (${años > 0 ? años + " año" + (años !== 1 ? "s" : "") + ", " : ""}${meses > 0 ? meses + " mes" + (meses !== 1 ? "es" : "") + ", " : ""}${dias > 0 ? dias + " día" + (dias !== 1 ? "s" : "") + " " : "hoy"})`;
+  return fechaFormateada;
+};
+
+
+
+
+  // Función para renderizar la lista de usuarios del canal
+  const renderUsersList = () => {
+    if (!canalInfo || !canalInfo.usuarios) {
+      return null;
     }
+
+    return canalInfo.usuarios.map((usuario, index) => (
+      <div key={index} className="sidebar__profileInfo">
+        <span className="userOfGamePicItem">
+          <img className="circular-image-channel-list" width="32px" src={canalInfo.usuario_pictures[index]} alt={usuario} />
+        </span>
+        <h3>{usuario}</h3>
+        <p>
+          <span className={`colorFicha ${usuario.colorFicha}`}>{usuario.colorFicha}</span>
+        </p>
+      </div>
+    ));
   };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar__top">Usuarios en {canalActivoNombre}</div> {/* Mostrar el nombre del canal activo */}
-      <div className="sidebar__channels">
-        <div className="sidebar__chanelsHeader">
-          <div className="sidebar__header">
-            <ExpandMore />
-            <h4>Poleanax</h4>
-          </div>
-          <Add className="sidebar__addChannel" onClick={agregarCanal} />
-        </div>
-        <div className="sidebar__channelsList">
-          {/* Mostrar la lista de canales si canales es un array */}
-          {Array.isArray(canales) && canales.length > 0 ? (
-            <>
-              {canales.map((canal, index) => (
-                <div key={index} onClick={() => { setCanalActivo(canal); setCanalActivoNombre(canal); }}>
-                  {/* Actualizar el nombre del canal activo al seleccionar un nuevo canal */}
-                  <CanalEnSidebar nombre_cann={canal} id={index} setCanalActivo={setCanalActivo} />
-                </div>
-              ))}
-            </>
-          ) : (
-            <p>No hay canales disponibles</p>
-          )}
-        </div>
-
-        <div className="sidebar__profile">
-          <Avatar src={usuario.picture} />
-          <div className="sidebar__profileInfo">
-            <h3>{usuario.name}</h3>
-            <p>Identificador</p>
+    <div className="sidebarChannel">
+      <div className="canalEnListaContenedor">
+        {renderUsersList()}
+        <div className="sidebar__profileInfo">
+          <div className="canalInfo">
+            <h3>{canalInfo ? `$${canalInfo.apuesta}` : null}</h3>
+            {/* Asegúrate de pasar la fecha de creación del canal a la función formatCreationDate */}
+            {/* <p>{formatCreationDate(canalInfo.created_en)}</p> */}
           </div>
         </div>
       </div>

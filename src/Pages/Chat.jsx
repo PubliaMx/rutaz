@@ -7,6 +7,7 @@ import Sidebar from "../views/Sidebar";
 import SidebarUsersContainer from "../views/SidebarUsersContainer";
 import '../styles/chat.css';
 
+
 import SidebarChannelList from "../views/SidebarChannelList";
 import ChannelItem from "../views/ChannelItem";
 

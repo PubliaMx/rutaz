@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Add } from "@material-ui/icons";
-import axios from "axios"; // Importa axios para hacer solicitudes HTTP
-import io from "socket.io-client"; // Importa el cliente de Socket.IO
+import axios from "axios"; 
+import io from "socket.io-client"; 
 
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT;
 
-const socket = io('http://localhost:3300'); // Establece la conexión con el servidor de Socket.IO
+const socket = io('http://localhost:3300');
 
-function AgregarCanal({ obtenerCanales, usuario, usuarioName }) {
+function AgregarCanal({ obtenerCanales, usuario, usuarioName, setCanalActivo }) {
   const [canales, setCanales] = useState([]);
 
   useEffect(() => {
     obtenerCanales();
   }, []);
 
-  // Función para agregar un canal
   const agregarCanal = async () => {
     const nombreCanal = prompt("Ingresa un #Nombre para el Salón del Juego");
     if (!nombreCanal) {
-      return; // Si el usuario presiona Cancelar, salir de la función
+      return;
     }
 
     let montoApuesta;
     while (true) {
       montoApuesta = prompt("Ingresa el monto a apostar");
       if (montoApuesta === null) {
-        return; // Si el usuario presiona Cancelar, salir de la función
+        return;
       } else if (isNaN(montoApuesta) || parseInt(montoApuesta) <= 50) {
         alert("El monto de la apuesta debe ser una cantidad válida (superior a $50).");
       } else {
@@ -38,7 +37,7 @@ function AgregarCanal({ obtenerCanales, usuario, usuarioName }) {
     while (true) {
       const colorInput = prompt("Selecciona un color para el canal:\n1. Amarillo\n2. Azul\n3. Verde\n4. Naranja");
       if (!colorInput) {
-        return; // Si el usuario presiona Cancelar, salir de la función
+        return;
       }
       const opcion = parseInt(colorInput);
       if (opcion < 1 || opcion > 4) {
@@ -64,20 +63,8 @@ function AgregarCanal({ obtenerCanales, usuario, usuarioName }) {
       }
     }
 
-    // Emitir un evento 'chat_new_channel' al servidor de Socket.IO
-    socket.emit('chat_new_channel', {
-      nombre_canal: nombreCanal,
-      apuesta: parseInt(montoApuesta),
-      ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
-      timestamp: 'mas',
-      creador: usuario,
-      
-      // Puedes incluir más datos relevantes del canal aquí si lo necesitas
-    });
-
     try {
-      //alert(usuario.name);
-      const timeChanelCreated = new Date().toISOString(); // Guarda la fecha y hora actual en formato ISO 8601
+      const timeChanelCreated = new Date().toISOString();
 
       const response = await axios.post(
         "http://localhost:80/juego/api/crear_canal_chat.php",
@@ -85,24 +72,24 @@ function AgregarCanal({ obtenerCanales, usuario, usuarioName }) {
           type: "agregar_canal_chat",
           nombre_can: nombreCanal,
           apuesta: parseInt(montoApuesta),
-          ficha: colorSeleccionado, // Agregar la propiedad 'ficha' con el color seleccionado
+          ficha: colorSeleccionado,
           creador: usuario.name,
           creador_mail: usuario.email,
-          timestamp: timeChanelCreated, // Obtiene la fecha y hora actual en formato ISO 8601
+          timestamp: timeChanelCreated,
           creador_picture: usuario.picture,
         }
       );
 
-      if (response.data.success) {
-        //alert('canal creado con éxito succes');
-        obtenerCanales(); // Actualizar la lista de canales después de agregar uno nuevo
-
+      if (response.data && response.data.success) {
+        obtenerCanales();
+        setCanalActivo(nombreCanal);
+        alert('Canal creado con éxito.');
       } else {
-        alert('canal creado con éxito error');
-        console.error("Error al agregar canal:", response.data.message);
+        alert('Error al agregar canal. Por favor, intenta de nuevo.');
+        console.error("Error al agregar canal:", response.data ? response.data.message : "Respuesta inválida del servidor");
       }
     } catch (error) {
-      //alert('canal creado con éxito error2');
+      alert('Error al agregar canal. Por favor, intenta de nuevo.');
       console.error("Error al agregar canal:", error);
     }
   };

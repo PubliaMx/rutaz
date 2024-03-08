@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ExpandMore, Add } from "@material-ui/icons";
 import CanalEnSidebar from "../Components/Chat/CanalEnSidebar";
 import UsuariosJuego from "./UsuariosJuego";
+import SidebarUsers from "./SidebarUsers";
 
 function SidebarHeader({ onAddChannel, canalActivo }) {
 
@@ -24,7 +25,7 @@ function SidebarHeader({ onAddChannel, canalActivo }) {
     <div className="sidebar__channelsList">
          
 
-          <CanalEnSidebar canalActivo={canalActivo} />
+          <SidebarUsers canalActivo="ingreso" />
 
          
         </div>

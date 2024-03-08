@@ -17,7 +17,7 @@ function CanalEnSidebar({ nombre_cann, id }) {
       );
       const canales = response.data.canales;
       // Encuentra el canal correspondiente en la lista de canales
-      const canal = canales.find((canal) => canal.nombre_cann.toLowerCase() === nombre_cann.toLowerCase());
+      const canal = canales.find((canal) => canal.nombre_cann === nombre_cann);
       setCanalInfo(canal);
     } catch (error) {
       console.error("Error al obtener la información del canal:", error);

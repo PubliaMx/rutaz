@@ -7,6 +7,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import useApi from "../Hooks/connApi";
 
+
 const api_URL = process.env.REACT_APP_API_URL;
 const api_port = process.env.REACT_APP_API_PORT;
 
@@ -24,10 +25,10 @@ function SidebarUsersContainer({ usuario, setCanalActivo, canalActivo }) {
 
   const obtenerCanales = async () => {
     try {
-      const response = await axios.post(apiPath, { type: "canales_chat" });
+      const response = await axios.post('http://localhost:80/juego/api/textChat.php', { type: "canales_chat" });
       setCanales(response.data.canales);
     } catch (error) {
-      console.error("Error al obtener los canales:", error);
+      console.error("Error al obtener los canales***************:", error);
     }
   };
 
